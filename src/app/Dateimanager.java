@@ -22,4 +22,8 @@ public class Dateimanager {
 			return null;
 		}
 	}
+	
+	public static void speichern(){
+		// folgt
+	}
 }

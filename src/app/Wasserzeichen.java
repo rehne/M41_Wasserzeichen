@@ -1,18 +1,23 @@
 package app;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
+import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 public class Wasserzeichen {
@@ -30,8 +35,15 @@ public class Wasserzeichen {
 	
 	private void oeffnen(){
 		int ergebnis = dateiauswahldialog.showOpenDialog(frame);
+		
+		// Wenn bei der Bildauswahl im Explorer "Abbrechen" gewählt wird,
+		// wird keine Fehlermeldung ausgegeben
+		if(ergebnis != JFileChooser.APPROVE_OPTION){
+			return;
+		}
 		File selektierteDatei = dateiauswahldialog.getSelectedFile();
 		aktuellesBild = Dateimanager.ladeBild(selektierteDatei);
+		bildflaeche.setzeBild(aktuellesBild);
 	}
 	
 	private void schliessen(){
@@ -65,11 +77,28 @@ public class Wasserzeichen {
 	private void fensterErzeugen(){
 		frame = new JFrame("Wasserzeichen App");
 		JPanel contentPane = (JPanel)frame.getContentPane();
-		contentPane.setBorder(new EmptyBorder(6, 6, 6, 6));
+		contentPane.setBorder(new EmptyBorder(7, 7, 7, 7));
 		
 		menuBarErzeugen(frame);
-		
+
 		bildflaeche = new Bildflaeche();
+		contentPane.add(bildflaeche, BorderLayout.CENTER);
+		
+		FlowLayout flow = new FlowLayout();
+		JPanel addWatermarkPane = new JPanel();
+		
+		JLabel watermarkLabel = new JLabel("Wasserzeichen: ");
+		addWatermarkPane.add(watermarkLabel);
+		
+		JTextField watermark = new JTextField("hier eingeben");
+		addWatermarkPane.add(watermark);
+		
+		JButton burnWatermark = new JButton("Einbrennen");
+		addWatermarkPane.add(burnWatermark);
+		
+		addWatermarkPane.setLayout(flow);
+		
+		frame.add(addWatermarkPane, BorderLayout.SOUTH);
 		
 		frame.pack();
 		
