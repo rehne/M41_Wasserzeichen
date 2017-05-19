@@ -4,7 +4,9 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -15,15 +17,21 @@ import javax.swing.border.EmptyBorder;
 
 public class Wasserzeichen {
 	
-	private static final String VERSION = "Version 0.0.1";
+	private static final String VERSION = "Version 0.0.2";
+	private static JFileChooser dateiauswahldialog = new JFileChooser(System.getProperty("user.dir"));
+	
 	private JFrame frame;
+	private Bildflaeche bildflaeche;
+	private Farbbild aktuellesBild;
 	
 	public Wasserzeichen(){
 		fensterErzeugen();
 	}
 	
 	private void oeffnen(){
-		
+		int ergebnis = dateiauswahldialog.showOpenDialog(frame);
+		File selektierteDatei = dateiauswahldialog.getSelectedFile();
+		aktuellesBild = Dateimanager.ladeBild(selektierteDatei);
 	}
 	
 	private void schliessen(){
@@ -38,6 +46,7 @@ public class Wasserzeichen {
 		System.exit(0);
 	}
 	
+	// Info Box mit Versionsnummer
 	private void info(){
 		JOptionPane.showMessageDialog(frame,
 				"Gruppe M41\n"
@@ -59,6 +68,8 @@ public class Wasserzeichen {
 		contentPane.setBorder(new EmptyBorder(6, 6, 6, 6));
 		
 		menuBarErzeugen(frame);
+		
+		bildflaeche = new Bildflaeche();
 		
 		frame.pack();
 		
