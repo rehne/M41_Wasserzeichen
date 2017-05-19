@@ -88,7 +88,6 @@ public class Wasserzeichen {
 		
 		JMenuItem oeffnen = new JMenuItem("Öffnen ...");
 		oeffnen.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				oeffnen();
 			}
@@ -97,16 +96,16 @@ public class Wasserzeichen {
 		
 		JMenuItem schliessen = new JMenuItem("Schliessen");
 		schliessen.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				schliessen();
 			}
 		});
 		dateiMenue.add(schliessen);
+
+		dateiMenue.addSeparator();
 		
 		JMenuItem speichernUnter = new JMenuItem("Speichern Unter ...");
 		speichernUnter.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				speichernUnter();
 			}
@@ -117,7 +116,6 @@ public class Wasserzeichen {
 		
 		JMenuItem beenden = new JMenuItem("Beenden");
 		beenden.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				beenden();
 			}
@@ -129,7 +127,6 @@ public class Wasserzeichen {
 		
 		JMenuItem info = new JMenuItem("Info");
 		info.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				info();
 			}
