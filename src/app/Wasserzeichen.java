@@ -47,7 +47,8 @@ public class Wasserzeichen {
 	}
 	
 	private void schliessen(){
-		
+		aktuellesBild = null;
+		bildflaeche.loeschen();
 	}
 	
 	private void speichernUnter(){
