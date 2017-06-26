@@ -22,7 +22,7 @@ import javax.swing.border.EmptyBorder;
 
 public class WasserzeichenFenster {
 	
-	private static final String VERSION = "Version 0.0.3";
+	private static final String VERSION = "Version 0.1.1";
 	private static JFileChooser dateiauswahldialog = new JFileChooser(System.getProperty("user.dir"));
 	
 	private JFrame frame;
@@ -69,7 +69,7 @@ public class WasserzeichenFenster {
 				+ "Nathalie Schmitz\n"
 				+ "Christopher Poloczek\n"
 				+ "Philipp Schmeier\n"
-				+ "Maik Foitzek\n"
+				+ "Maik Foitzik\n"
 				+ "René Honnen\n\n"
 				+ VERSION,
 				"Info über Wasserzeichen",
@@ -81,22 +81,36 @@ public class WasserzeichenFenster {
 		JPanel contentPane = (JPanel)frame.getContentPane();
 		contentPane.setBorder(new EmptyBorder(7, 7, 7, 7));
 		
+		//frame.setLocationRelativeTo(null);
+		
 		menuBarErzeugen(frame);
 
 		bildflaeche = new Bildflaeche();
 		contentPane.add(bildflaeche, BorderLayout.CENTER);
+		contentPane.setSize(400, 300);
 		
-		FlowLayout flow = new FlowLayout();
-		JPanel addWatermarkPane = new JPanel();
+		FlowLayout watermarks = new FlowLayout();
+		JPanel watermarkPanes = new JPanel();
+		watermarkPanes.setLayout(watermarks);
 		
-		JLabel watermarkLabel = new JLabel("Wasserzeichen: ");
-		addWatermarkPane.add(watermarkLabel);
+		FlowLayout write = new FlowLayout();
+		JPanel writeWatermarkPane = new JPanel();
+		writeWatermarkPane.setSize(300, 200);
+		writeWatermarkPane.setLayout(write);
+		
+		FlowLayout read = new FlowLayout();
+		JPanel readWatermarkPane = new JPanel();
+		readWatermarkPane.setSize(300, 200);
+		readWatermarkPane.setLayout(read);
+		
+		JLabel addWatermarkLabel = new JLabel("Wasserzeichen: ");
+		writeWatermarkPane.add(addWatermarkLabel, BorderLayout.NORTH);
 		
 		JTextField watermark = new JTextField("hier eingeben");
-		addWatermarkPane.add(watermark);
+		writeWatermarkPane.add(watermark, BorderLayout.CENTER);
 		
 		JButton burnWatermark = new JButton("Einbrennen");
-		addWatermarkPane.add(burnWatermark);
+		writeWatermarkPane.add(burnWatermark, BorderLayout.SOUTH);
 		burnWatermark.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				File output = new File("./out.png");
@@ -104,14 +118,16 @@ public class WasserzeichenFenster {
 			}
 		});
 		
-		addWatermarkPane.setLayout(flow);
+		JLabel readWatermarkLabel = new JLabel("Wasserzeichen ausgelesen: ");
+		readWatermarkPane.add(readWatermarkLabel, BorderLayout.NORTH);
 		
-		frame.add(addWatermarkPane, BorderLayout.SOUTH);
+		frame.add(watermarkPanes, BorderLayout.SOUTH);
+		watermarkPanes.add(writeWatermarkPane, BorderLayout.WEST);
+		watermarkPanes.add(readWatermarkPane, BorderLayout.EAST);
 		
 		frame.pack();
 		
-		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-		frame.setSize(d.width/2 - frame.getWidth()/2, d.height/2 - frame.getHeight()/2);
+		frame.setSize(650, 500);
 		frame.setVisible(true);
 	}
 	
@@ -159,10 +175,11 @@ public class WasserzeichenFenster {
 		});
 		dateiMenue.add(beenden);
 		
-		JMenu infoMenu = new JMenu("?");
+		// Das Info-Menü erzeugen
+		JMenu infoMenu = new JMenu("Info");
 		menuBar.add(infoMenu);
 		
-		JMenuItem info = new JMenuItem("Info");
+		JMenuItem info = new JMenuItem("Über diese App");
 		info.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				info();

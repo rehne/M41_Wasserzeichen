@@ -23,7 +23,7 @@ public class Wasserzeichen {
 			e.printStackTrace();
 		}
 	
-		//Schreibe den Anfangsmarker ÿÿÿ ins Bild
+		//Schreibe den Anfangsmarker 'ÿ' ins Bild
 		for(int i = 0; i < 3; i++) {
 			schreibeCharInPixel('ÿ', i, bild);
 		}
@@ -33,7 +33,7 @@ public class Wasserzeichen {
 			schreibeCharInPixel(wasserzeichen.charAt(i), i + 3, bild);
 		}
 		
-		//Schreibe den Schlussmarker ÿÿÿ ins Bild
+		//Schreibe den Schlussmarker 'ÿ' ins Bild
 		for(int i = wasserzeichen.length(); i < wasserzeichen.length() + 3; i++) {
 			schreibeCharInPixel('ÿ', i + 3, bild);
 		}
@@ -66,7 +66,7 @@ public class Wasserzeichen {
 		if( 6*8 >= bild.getWidth() * bild.getHeight() ) return "Das Bild ist zu klein für ein Wasserzeichen.";
 		
 		String Wasserzeichen = "";
-		//Überprüfe, ob Anfangsmarker ÿÿÿ vorhanden ist
+		//Überprüfe, ob Anfangsmarker 'ÿ' vorhanden ist
 		if(leseCharAusPixel(0, bild) == 'ÿ' && leseCharAusPixel(1, bild) == 'ÿ' && leseCharAusPixel(2, bild) == 'ÿ') {
 			
 			//Lese Character aus dem Bild, solange der Endmarker noch nicht gefunden wurde und nicht auf Pixel außerhalb des Bildes zugegriffen wird
@@ -76,7 +76,7 @@ public class Wasserzeichen {
 							 i * 8 <= bild.getWidth() * bild.getHeight(); i++) {
 				Wasserzeichen += leseCharAusPixel(i, bild);
 			}
-			//Überprüfe, ob Endmarker ÿÿÿ gesetzt wurde und ob das Bild überhaupt noch genug Platz für den Endmarker hat
+			//Überprüfe, ob Endmarker 'ÿ' gesetzt wurde und ob das Bild überhaupt noch genug Platz für den Endmarker hat
 			if( (leseCharAusPixel(Wasserzeichen.length() + 3, bild) == 'ÿ'  &&
 				 leseCharAusPixel(Wasserzeichen.length() + 4, bild) == 'ÿ'  &&
 				 leseCharAusPixel(Wasserzeichen.length() + 5, bild) == 'ÿ') &&
@@ -106,7 +106,7 @@ public class Wasserzeichen {
 		int[] binaer = new int[8];
 		for(int i = 7; i >= 0; i--) {
 			
-			//RGB-Wert vom Pixel bei (x,y) abrufen
+			//RGB-Wert vom Pixel bei (x, y) abrufen
 			Color farbe = new Color(bild.getRGB(x, y));
 			int blauwert = farbe.getBlue();
 			
@@ -127,7 +127,7 @@ public class Wasserzeichen {
 	 * Schreibt ein Character in das Bild.
 	 * 
 	 * @param c - Character, das ins Bild geschrieben werden soll.
-	 * @param charNr -Nummer des Zeichen, welches ins Bild geschrieben wird.
+	 * @param charNr - Nummer des Zeichen, welches ins Bild geschrieben wird.
 	 * @param bild - Das Bild, in das geschrieben werden soll.
 	 */
 	private static void schreibeCharInPixel(char c, int charNr, BufferedImage bild) {
