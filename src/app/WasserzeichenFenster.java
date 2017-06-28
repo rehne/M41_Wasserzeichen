@@ -1,9 +1,7 @@
 package app;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -29,6 +27,7 @@ public class WasserzeichenFenster {
 	private Bildflaeche bildflaeche;
 	private File selektierteDatei;
 	private Farbbild aktuellesBild;
+	private String watermarkText = "";
 	
 	public WasserzeichenFenster(){
 		fensterErzeugen();
@@ -81,8 +80,6 @@ public class WasserzeichenFenster {
 		JPanel contentPane = (JPanel)frame.getContentPane();
 		contentPane.setBorder(new EmptyBorder(7, 7, 7, 7));
 		
-		//frame.setLocationRelativeTo(null);
-		
 		menuBarErzeugen(frame);
 
 		bildflaeche = new Bildflaeche();
@@ -114,12 +111,23 @@ public class WasserzeichenFenster {
 		burnWatermark.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				File output = new File("./out.png");
-				Wasserzeichen.schreibeWasserzeichen(selektierteDatei, output, "Hier könnte ihre Werbung stehen");
+				Wasserzeichen.schreibeWasserzeichen(selektierteDatei, output, watermark.getText());
 			}
 		});
-		
+
 		JLabel readWatermarkLabel = new JLabel("Wasserzeichen ausgelesen: ");
 		readWatermarkPane.add(readWatermarkLabel, BorderLayout.NORTH);
+
+		JLabel watermarkTextLabel = new JLabel(watermarkText);
+		readWatermarkPane.add(watermarkTextLabel, BorderLayout.SOUTH);
+		
+		JButton readWatermark = new JButton("Auslesen");
+		readWatermarkPane.add(readWatermark, BorderLayout.SOUTH);
+		readWatermark.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				watermarkTextLabel.setText(Wasserzeichen.leseWasserzeichen(selektierteDatei));
+			}
+		});
 		
 		frame.add(watermarkPanes, BorderLayout.SOUTH);
 		watermarkPanes.add(writeWatermarkPane, BorderLayout.WEST);
@@ -127,7 +135,7 @@ public class WasserzeichenFenster {
 		
 		frame.pack();
 		
-		frame.setSize(650, 500);
+		frame.setSize(700, 500);
 		frame.setVisible(true);
 	}
 	
@@ -140,36 +148,39 @@ public class WasserzeichenFenster {
 		menuBar.add(dateiMenue);
 		
 		JMenuItem oeffnen = new JMenuItem("Öffnen ...");
-		oeffnen.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		oeffnen.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
 				oeffnen();
 			}
 		});
 		dateiMenue.add(oeffnen);
 		
 		JMenuItem schliessen = new JMenuItem("Schliessen");
-		schliessen.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		schliessen.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
 				schliessen();
 			}
 		});
 		dateiMenue.add(schliessen);
-
-		dateiMenue.addSeparator();
 		
-		JMenuItem speichernUnter = new JMenuItem("Speichern Unter ...");
-		speichernUnter.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		JMenuItem speichernUnter = new JMenuItem("Speichern Unter");
+		speichernUnter.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
 				speichernUnter();
 			}
 		});
+
+		dateiMenue.addSeparator();
+		
 		dateiMenue.add(speichernUnter);
 		
 		dateiMenue.addSeparator();
 		
+		// Literatur: 2 | Programmierung: 9 | Ausarbeitung: 3 | Präsentation: 2 | Korrekturen: 1
+		
 		JMenuItem beenden = new JMenuItem("Beenden");
-		beenden.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		beenden.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
 				beenden();
 			}
 		});
@@ -180,8 +191,8 @@ public class WasserzeichenFenster {
 		menuBar.add(infoMenu);
 		
 		JMenuItem info = new JMenuItem("Über diese App");
-		info.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		info.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
 				info();
 			}
 		});
