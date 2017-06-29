@@ -1,6 +1,7 @@
 package app;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,7 +21,7 @@ import javax.swing.border.EmptyBorder;
 
 public class WasserzeichenFenster {
 	
-	private static final String VERSION = "Version 0.1.1";
+	private static final String VERSION = "Version 1.0.0";
 	private static JFileChooser dateiauswahldialog = new JFileChooser(System.getProperty("user.dir"));
 	
 	private JFrame frame;
@@ -61,18 +62,20 @@ public class WasserzeichenFenster {
 	
 	// Info Box mit Versionsnummer
 	private void info(){
-		JOptionPane.showMessageDialog(frame,
-				"Gruppe M41\n"
-				+ "Wasserzeichen\n\n"
-				+ "Gruppenmitglieder:\n\n"
-				+ "Nathalie Schmitz\n"
-				+ "Christopher Poloczek\n"
-				+ "Philipp Schmeier\n"
-				+ "Maik Foitzik\n"
-				+ "René Honnen\n\n"
-				+ VERSION,
-				"Info über Wasserzeichen",
-				JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(
+			frame,
+			"Gruppe M41\n"
+			+ "Wasserzeichen\n\n"
+			+ "Gruppenmitglieder:\n\n"
+			+ "Nathalie Schmitz\n"
+			+ "Christopher Poloczek\n"
+			+ "Philipp Schmeier\n"
+			+ "Maik Foitzik\n"
+			+ "René Honnen\n\n"
+			+ VERSION,
+			"Info über Wasserzeichen",
+			JOptionPane.INFORMATION_MESSAGE
+		);
 	}
 	
 	private void fensterErzeugen(){
@@ -84,7 +87,7 @@ public class WasserzeichenFenster {
 
 		bildflaeche = new Bildflaeche();
 		contentPane.add(bildflaeche, BorderLayout.CENTER);
-		contentPane.setSize(400, 300);
+		contentPane.setPreferredSize(new Dimension(700, 460));
 		
 		FlowLayout watermarks = new FlowLayout();
 		JPanel watermarkPanes = new JPanel();
@@ -92,18 +95,19 @@ public class WasserzeichenFenster {
 		
 		FlowLayout write = new FlowLayout();
 		JPanel writeWatermarkPane = new JPanel();
-		writeWatermarkPane.setSize(300, 200);
+		writeWatermarkPane.setPreferredSize(new Dimension(385, 130));
 		writeWatermarkPane.setLayout(write);
 		
 		FlowLayout read = new FlowLayout();
 		JPanel readWatermarkPane = new JPanel();
-		readWatermarkPane.setSize(300, 200);
+		readWatermarkPane.setPreferredSize(new Dimension(385, 130));
 		readWatermarkPane.setLayout(read);
 		
 		JLabel addWatermarkLabel = new JLabel("Wasserzeichen: ");
 		writeWatermarkPane.add(addWatermarkLabel, BorderLayout.NORTH);
 		
 		JTextField watermark = new JTextField("hier eingeben");
+		watermark.setPreferredSize(new Dimension(150, 100));
 		writeWatermarkPane.add(watermark, BorderLayout.CENTER);
 		
 		JButton burnWatermark = new JButton("Einbrennen");
@@ -135,7 +139,7 @@ public class WasserzeichenFenster {
 		
 		frame.pack();
 		
-		frame.setSize(700, 500);
+		frame.setSize(800, 600);
 		frame.setVisible(true);
 	}
 	
@@ -175,8 +179,6 @@ public class WasserzeichenFenster {
 		dateiMenue.add(speichernUnter);
 		
 		dateiMenue.addSeparator();
-		
-		// Literatur: 2 | Programmierung: 9 | Ausarbeitung: 3 | Präsentation: 2 | Korrekturen: 1
 		
 		JMenuItem beenden = new JMenuItem("Beenden");
 		beenden.addActionListener(new ActionListener(){

@@ -9,35 +9,31 @@ import javax.imageio.ImageIO;
 public class Wasserzeichen {
 	
 	/**
-	 * Ließt ein Bild ein, schreibt das Wasserzeichen ein und speichert ein neues Bild mit dem Wasserzeichen ab
-	 * @param aktuellesBild - Pfad des originallen Bildes
+	 * Liest ein Bild ein, schreibt das Wasserzeichen ein und speichert ein neues Bild mit dem Wasserzeichen ab
+	 * @param quelle - Pfad des originalen Bildes
 	 * @param ziel - Pfad des Bildes mit dem Wasserzeichen
 	 * @param wasserzeichen - Das Wasserzeichen, welches in das Bild eingeschrieben werden soll
 	 */
-	public static void schreibeWasserzeichen(File aktuellesBild, File ziel, String wasserzeichen) {
+	public static void schreibeWasserzeichen(File quelle, File ziel, String wasserzeichen) {
 		//Bild laden
 		BufferedImage bild = null;
 		try {
-			bild = ImageIO.read(aktuellesBild);
+			bild = ImageIO.read(quelle);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	
-		//Schreibe den Anfangsmarker 'ÿ' ins Bild
-		for(int i = 0; i < 3; i++) {
+		
+		for(int i = 0; i < 3; i++) {//Schreibe den Anfangsmarker 'ÿ' ins Bild
 			schreibeCharInPixel('ÿ', i, bild);
 		}
 		
-		//Schreibe Wasserzeichen ins Bild
-		for(int i = 0; i < wasserzeichen.length(); i++) {
+		for(int i = 0; i < wasserzeichen.length(); i++) {//Schreibe Wasserzeichen ins Bild
 			schreibeCharInPixel(wasserzeichen.charAt(i), i + 3, bild);
 		}
 		
-		//Schreibe den Schlussmarker 'ÿ' ins Bild
-		for(int i = wasserzeichen.length(); i < wasserzeichen.length() + 3; i++) {
+		for(int i = wasserzeichen.length(); i < wasserzeichen.length() + 3; i++) {//Schreibe den Schlussmarker 'ÿ' ins Bild
 			schreibeCharInPixel('ÿ', i + 3, bild);
 		}
-		
 		
 		//Bild abspeichern
 		try{
@@ -45,7 +41,6 @@ public class Wasserzeichen {
         }catch(IOException e){
             System.out.println(e);
         }
-		
 	}
 	
 	/**
@@ -67,10 +62,12 @@ public class Wasserzeichen {
 		
 		String Wasserzeichen = "";
 		//Überprüfe, ob Anfangsmarker 'ÿ' vorhanden ist
-		if(leseCharAusPixel(0, bild) == 'ÿ' && leseCharAusPixel(1, bild) == 'ÿ' && leseCharAusPixel(2, bild) == 'ÿ') {
+		if(leseCharAusPixel(0, bild) == 'ÿ' &&
+		   leseCharAusPixel(1, bild) == 'ÿ' &&
+		   leseCharAusPixel(2, bild) == 'ÿ') {
 			
 			//Lese Character aus dem Bild, solange der Endmarker noch nicht gefunden wurde und nicht auf Pixel außerhalb des Bildes zugegriffen wird
-			for(int i = 3; !(leseCharAusPixel(i, bild)     == 'ÿ'  &&
+			for(int i = 3; !(leseCharAusPixel(i, bild) 	   == 'ÿ'  &&
 							 leseCharAusPixel(i + 1, bild) == 'ÿ'  &&
 							 leseCharAusPixel(i + 2, bild) == 'ÿ') &&
 							 i * 8 <= bild.getWidth() * bild.getHeight(); i++) {
@@ -102,11 +99,11 @@ public class Wasserzeichen {
 		int x = pixelNr % bild.getWidth();
 		int y = (pixelNr) / bild.getWidth();
 		
-		//Binärzahl auslesen
+		//Bin�rzahl auslesen
 		int[] binaer = new int[8];
 		for(int i = 7; i >= 0; i--) {
 			
-			//RGB-Wert vom Pixel bei (x, y) abrufen
+			//RGB-Wert vom Pixel bei (x,y) abrufen
 			Color farbe = new Color(bild.getRGB(x, y));
 			int blauwert = farbe.getBlue();
 			
@@ -127,7 +124,7 @@ public class Wasserzeichen {
 	 * Schreibt ein Character in das Bild.
 	 * 
 	 * @param c - Character, das ins Bild geschrieben werden soll.
-	 * @param charNr - Nummer des Zeichen, welches ins Bild geschrieben wird.
+	 * @param charNr -Nummer des Zeichen, welches ins Bild geschrieben wird.
 	 * @param bild - Das Bild, in das geschrieben werden soll.
 	 */
 	private static void schreibeCharInPixel(char c, int charNr, BufferedImage bild) {
@@ -135,12 +132,13 @@ public class Wasserzeichen {
 		
 		//Koordinaten im Bild der pixelNr bestimmen
 		int x = pixelNr % bild.getWidth();
-		int y = (pixelNr) / bild.getWidth();
+		int y = pixelNr / bild.getWidth();
+		
 		int[] binaer = charZuBinaer(c);
 		
 		for(int i = 7; i >= 0; i--) {//durchläuft Binärzahl
 			
-			//RGB-Wert vom Pixel bei (x, y) abrufen
+			//RGB-Wert vom Pixel bei (x,y) abrufen
 			Color farbe = new Color(bild.getRGB(x, y));
 			int blauwert = farbe.getBlue();
 			
@@ -149,7 +147,8 @@ public class Wasserzeichen {
 				if(blauwert % 2 == 1) {//Blauwert ist ungerade und soll gerade werden
 					blauwert--;	
 				}
-			} else {
+			} 
+			else {
 				if(blauwert % 2 == 0) {//Blauwert ist gerade und soll ungerade werden
 					blauwert++;
 				}
@@ -175,7 +174,7 @@ public class Wasserzeichen {
 	 * Funktioniert nur mit Werten zwischen 0 und 255.
 	 * 
 	 * @param c - Das Character, welches umgewandelt werden soll.
-	 * @return binaer - Die c ensprechender Binärzahl in Form eines Arrays
+	 * @return binaer - Die c entsprechender Binärzahl in Form eines Arrays
 	 */
 	private static int[] charZuBinaer(char c) {
 		int[] binaer = new int[8];
@@ -186,8 +185,8 @@ public class Wasserzeichen {
 	/** 
 	 * Wandelt eine Binärzahl in Form eines Integer-Arrays in ein Character um.
 	 * 
-	 * @param binaer - Die Binarzahl, die umgewandelt werden soll.
-	 * @return c, Das der Binarzahl entsprechende Character
+	 * @param binaer - Die Binärzahl, die umgewandelt werden soll.
+	 * @return c, Das der Binärzahl entsprechende Character
 	 */
 	private static char binaerZuChar(int[] binaer) {
 		char c = 0;
@@ -198,8 +197,8 @@ public class Wasserzeichen {
 	/** 
 	 * Prüft, ob das Bild genug Pixel für das Wasserzeichen hat.
 	 * 
-	 * @param wasserzeichen - Das Wasserzeichen, das eingebetet werden soll.
-	 * @param bild - Das Bild, in das das Wasserzeichen eingebetet werden soll.
+	 * @param wasserzeichen - Das Wasserzeichen, das eingebettet werden soll.
+	 * @param bild - Das Bild, in das das Wasserzeichen eingebettet werden soll.
 	 * @return true, wenn das Bild genug Pixel hat
 	 */
 	public static boolean hatGenugPixel(File quelle, String wasserzeichen) {
@@ -211,9 +210,11 @@ public class Wasserzeichen {
 		}
 		
 		//Jedes Zeichen nimmt 8 Pixel in Anspruch.
-		//6 * 8 repräsentiert die Marker, welche den Anfang und das Ende des Wasserzeichens kennzeichnen.
+		//6 * 8 repr�sentiert die Marker, welche den Anfang und das Ende des Wasserzeichens kennzeichnen.
 		long anzCharPixel = wasserzeichen.length() * 8 + 6 * 8;
 		long anzPixel = bild.getWidth() * bild.getHeight();
+		
 		return anzPixel >= anzCharPixel;
 	}
+
 }
